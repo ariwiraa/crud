@@ -1,12 +1,17 @@
 package config
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/joeshaw/envdecode"
 	"github.com/joho/godotenv"
 	"github.com/pkg/errors"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
+
+var gormDB *gorm.DB
 
 // Config holds configuration for the project.
 type Config struct {
@@ -52,7 +57,32 @@ func NewConfig(env string) (*Config, error) {
 	return &config, nil
 }
 
+func CreateConnection() *gorm.DB {
+	config, err := NewConfig(".env")
+	if err != nil {
+		panic(err)
+	}
+
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s",
+		config.Database.Host,
+		config.Database.Username,
+		config.Database.Password,
+		config.Database.Name,
+		config.Database.Port)
+
+	gormDB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("sukses konek")
+
+	return gormDB
+}
+
 // func CreateConnection() *gorm.DB {
+// 	db := *gorm.DB
+
 // 	config, err := NewConfig(".env")
 // 	if err != nil {
 // 		panic(err)
@@ -65,7 +95,7 @@ func NewConfig(env string) (*Config, error) {
 // 		config.Database.Name,
 // 		config.Database.Port)
 
-// 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+// 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 // 	if err != nil {
 // 		panic(err)
 // 	}

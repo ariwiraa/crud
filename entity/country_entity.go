@@ -9,14 +9,14 @@ const (
 type Country struct {
 	CountryId   uuid.UUID `gorm:"type:uuid;primary_key" json:"country_id"`
 	CountryName string    `gorm:"type:varchar(100);not_null" json:"country_name"`
-	Players     []*Player `gorm:"foreignKey:PlayerID" json:"players"`
+	PlayerID    uuid.UUID `gorm:"type:uuid;not_null" json:"players_id"`
+	Players     *Player   `gorm:"foreignKey:PlayerID" json:"players"`
 }
 
-func NewCountry(countryID uuid.UUID, countryName string, players []*Player) *Country {
+func NewCountry(countryID uuid.UUID, countryName string) *Country {
 	return &Country{
 		CountryId:   countryID,
 		CountryName: countryName,
-		Players:     players,
 	}
 }
 
