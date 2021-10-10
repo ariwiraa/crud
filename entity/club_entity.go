@@ -7,19 +7,19 @@ const (
 )
 
 type Club struct {
-	ClubId    uuid.UUID `gorm:"type:uuid;primary_key" json:"club_id"`
-	ClubName  string    `gorm:"type:varchar(100);not_null" json:"club_name"`
+	ClubID    uuid.UUID `gorm:"type:uuid;primary_key" json:"club_id"`
 	ManagerID uuid.UUID `gorm:"type:uuid;not_null" json:"manager_id"`
+	ClubName  string    `gorm:"type:varchar(100);not_null" json:"club_name"`
 	Players   *Player   `gorm:"many2many:player_club" json:"players"`
 	Managers  *Manager  `gorm:"foreignKey:ManagerID" json:"managers"`
 }
 
-func NewClub(clubId uuid.UUID, clubName string, players *Player, managers *Manager) *Club {
+func NewClub(clubID, managerID uuid.UUID, clubName string, players *Player) *Club {
 	return &Club{
-		ClubId:   clubId,
-		ClubName: clubName,
-		Players:  players,
-		Managers: managers,
+		ClubID:    clubID,
+		ManagerID: managerID,
+		ClubName:  clubName,
+		Players:   players,
 	}
 }
 

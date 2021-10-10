@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"net/http"
+	"crud-echo/internal/handler/http"
 
 	"github.com/labstack/echo/v4"
 )
@@ -9,9 +9,7 @@ import (
 func Init() *echo.Echo {
 	e := echo.New()
 
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hello World")
-	})
+	e.GET("/", http.Status)
 
 	return e
 }

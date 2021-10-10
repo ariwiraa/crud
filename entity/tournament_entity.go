@@ -13,11 +13,11 @@ type Tournament struct {
 	Clubs          *Club     `gorm:"foreignKey:ClubID" json:"clubs"`
 }
 
-func NewTournament(tournamentID uuid.UUID, tournamentName string, clubs *Club) *Tournament {
+func NewTournament(tournamentID, clubID uuid.UUID, tournamentName string) *Tournament {
 	return &Tournament{
 		TournamentId:   tournamentID,
 		TournamentName: tournamentName,
-		Clubs:          clubs,
+		ClubID:         clubID,
 	}
 }
 
